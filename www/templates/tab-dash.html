@@ -5,6 +5,33 @@
       <h3> 
         hola
       </h3>
+
+    <form>
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Email
+        </div>
+        <select id="email">
+          <option ng-repeat='x in usuarios'>{{x}}</option>
+        </select>
+      </label>
+
+      <label class="item item-input">
+        <span class="input-label">Descripcion</span>
+        <input name="descripcion" id="descripcion" type="text">
+      </label>
+
+      <label class="item item-input">
+        <span class="input-label">Monto</span>
+        <input name="monto" id="monto" type="number">
+      </label>
+
+      <br>
+      <button id="transfer" class="button button-balanced" name="transfer">
+        Transferir
+      </button>
+    </form>
+
     </div>
   </ion-content>
 </ion-view>

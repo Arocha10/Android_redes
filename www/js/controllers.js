@@ -15,7 +15,7 @@ angular.module('starter.controllers', [])
     }
     // Sign in with email and pass.
     // [START createwithemail]
-    var cuentas= db.ref('/Cuentas')
+    var cuentas= db.ref('/Cuentas');
     firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
@@ -25,14 +25,14 @@ angular.module('starter.controllers', [])
         alert('La contraseña no es segura.');
       } else {
         alert(errorMessage);
-      }
+      };
       alert(error);
       // [END_EXCLUDE]
     })
     .then(function(newUser){
       var nombre = document.getElementById('nombre').value;
       var apellido = document.getElementById('apellido').value;
-      cuentas.child(newUser.uid).set({nombre : nombre, apellido : apellido, total:5000})
+      cuentas.child(newUser.uid).set({nombre : nombre, apellido : apellido, total:5000, email:email})
     });
     alert("Te has registrado correctamente");
     $location.path('/tab/dash');
@@ -95,10 +95,46 @@ angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function($scope, $location, Usuario) {
   $scope.usuario = Usuario.usuario();
+  $scope.usuarios = [];
   console.log($scope.usuario);
+
   if ($scope.usuario === null){
     $location.path('/ini');
-  }
+  };
+
+  db.ref('/Cuentas').on('value', function(data){
+    for (var key in data.val()) {
+      if (data.val()[key].email != Usuario.usuario().email){
+        $scope.usuarios.push(data.val()[key].email)
+      }
+    }
+  }); 
+
+  console.log($scope.usuarios);
+
+  function transfer() {
+    var user_id = {};
+    var email = document.getElementById('email').value;
+    console.log("email obtenido " + email);
+    var monto = document.getElementById('monto').value;
+    var descripcion = document.getElementById('descripcion').value;
+    
+    db.ref('/Cuentas').on("child_added", function(snapshot) {
+      if (snapshot.val().email === email){
+        db.ref('/Transferencias').push({usr_origen: $scope.usuario.uid,
+                                               usr_destino: snapshot.key,
+                                               monto : monto,
+                                               descripcion: descripcion,
+                                               status: 'pendiente'});
+        user_id.listo=true;
+      }  
+      
+    });
+    console.log(user_id.listo);
+  };
+
+  document.getElementById('transfer').addEventListener('click', transfer, false);
+  
 })
 
 .controller('ChatsCtrl', function($scope, Chats) {

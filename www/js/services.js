@@ -19,10 +19,12 @@ angular.module('starter.services', [])
         // [START_EXCLUDE silent]
         usuario= db.ref('/Cuentas/'+uid);
         console.log("hay user");        
-        usuario.once('value').then(function(snapshot) {
+        usuario.on('value', function(snapshot) {
           usuario_actual.nombre = snapshot.val().nombre;
           usuario_actual.apellido = snapshot.val().apellido;
           usuario_actual.total = snapshot.val().total;
+          usuario_actual.email = email;
+          usuario_actual.uid = uid;
         });
         
       } else {
@@ -30,6 +32,8 @@ angular.module('starter.services', [])
         usuario_actual.nombre =null;
         usuario_actual.apellido = null;
         usuario_actual.total = null;
+        usuario_actual.email = null;
+        usuario_actual.uid = null; 
       }
 
       // [START_EXCLUDE silent]
