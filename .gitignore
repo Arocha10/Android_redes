@@ -2,3 +2,6 @@
 # http://git-scm.com/docs/gitignore
 
 
+platforms/
+plugins/
+node_modules/
