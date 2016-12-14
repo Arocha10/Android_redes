@@ -95,7 +95,7 @@ angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function($scope, $location, Usuario) {
   $scope.usuario = Usuario.usuario();
-  console.log ($scope.usuario);
+  console.log($scope.usuario);
   if ($scope.usuario === null){
     $location.path('/ini');
   }
